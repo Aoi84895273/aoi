@@ -65,7 +65,7 @@ function renderList() {
   for (const row of filtered) {
     const p = row.post, item = document.createElement('div'); item.className = 'admin-row';
     const date = document.createElement('time'); date.dateTime = p.entryDate; date.textContent = p.entryDate; date.className = 'archive-date';
-    const title = document.createElement('span'); title.textContent = p.title.trim() ? p.title : '（題名なし）'; title.className = 'admin-row-title';
+    const title = document.createElement('span'); title.textContent = p.title.trim() ? p.title : '無題'; title.className = 'admin-row-title';
     if (!postCounts.has(p)) postCounts.set(p,countCharacters(p.content));
     const count = document.createElement('span'); count.className = 'admin-row-count';
     count.textContent = `${countFormat.format(postCounts.get(p))}文字`; count.setAttribute('aria-label',`本文 ${count.textContent}`);
@@ -89,9 +89,10 @@ function renderPublishState() {
   $('post-status').dataset.published = String(published);
   $('unpublish-post').hidden = !published;
   $('publish-post').textContent = published ? '公開を更新する' : '公開する';
+  $('publish-help').hidden = !published;
   $('publish-help').textContent = published
     ? '公開済みの日記は「保存する」でも変更が公開サイトに反映される。反映には数分かかる。'
-    : '「保存する」で下書きを保存し、「公開する」でサイトに公開する。公開サイトへの反映には数分かかる。';
+    : '';
 }
 function editPost(row = null) {
   current = row;
@@ -99,7 +100,7 @@ function editPost(row = null) {
   editorId = p?.id ?? crypto.randomUUID();
   $('title').value = p?.title ?? ''; $('entry-date').value = p?.entryDate ?? today(); $('category').value = p?.category ?? ''; $('content').value = p?.content ?? '';
   renderPublishState();
-  $('editor-title').textContent = p ? '日記を編集する' : '日記を書く'; $('delete-post').hidden = !p; $('preview').hidden = true; $('preview-toggle').textContent = '本文を確認';
+  $('editor-title').textContent = p ? '編集' : '日記を書く'; $('delete-post').hidden = !p; $('preview').hidden = true; $('preview-toggle').textContent = '本文を確認';
   dirty = false; $('save-state').textContent = ''; notice(''); view('editor'); bodyEditor.refresh(); bodyFind.reset(); $('title').focus();
 }
 $('setup-form').addEventListener('submit', e => { e.preventDefault(); operation(async () => {
@@ -131,7 +132,7 @@ $('disconnect').addEventListener('click', () => {
   clearSession(); showLogin(); notice('ログアウトした。');
 });
 $('new-post').addEventListener('click', () => editPost());
-$('back').addEventListener('click', () => { if (!canLeave()) return; dirty = false; renderList(); view('dashboard'); });
+for (const id of ['back','back-bottom']) $(id).addEventListener('click', () => { if (!canLeave()) return; dirty = false; renderList(); view('dashboard'); });
 $('nav-posts').addEventListener('click', () => { if (!canLeave()) return; dirty = false; renderList(); view('dashboard'); notice(''); });
 $('nav-profile').addEventListener('click', () => {
   if (!canLeave()) return;
@@ -262,7 +263,7 @@ async function savePost(status) {
   notice('保存している…');
   const result = await store.save(post,current?.sha);
   current = {post,sha:result.content.sha}; rows = [...rows.filter(r => r.post.id !== post.id),current];
-  dirty = false; $('save-state').textContent = '保存済み'; $('delete-post').hidden = false; $('editor-title').textContent = '日記を編集する';
+  dirty = false; $('save-state').textContent = '保存済み'; $('delete-post').hidden = false; $('editor-title').textContent = '編集';
   renderPublishState();
   notice(status === 'published'
     ? '公開する内容を保存した。サイトへの反映には数分かかる。一覧の「公開の反映状況」で確認できる。'
@@ -289,7 +290,7 @@ $('delete-post').addEventListener('click', () => {
 });
 $('preview-toggle').addEventListener('click', () => {
   $('preview').hidden = !$('preview').hidden; $('preview-toggle').textContent = $('preview').hidden ? '本文を確認' : '確認を閉じる';
-  $('preview-title').textContent = $('title').value.trim() ? $('title').value : '（題名なし）'; $('preview-content').replaceChildren();
+  $('preview-title').textContent = $('title').value.trim() ? $('title').value : '無題'; $('preview-content').replaceChildren();
   for (const text of $('content').value.split(/\n{2,}/)) { const p = document.createElement('p'); p.textContent = text; $('preview-content').append(p); }
 });
 $('export').addEventListener('click', () => operation(async () => {

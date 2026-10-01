@@ -156,7 +156,7 @@ button.danger { color: var(--destructive); margin-right: auto; }
 input:not([type=checkbox]), textarea, select { width: 100%; border: 1px solid var(--input); border-radius: .25rem; padding: .6rem .75rem; background: white; color: var(--foreground); }
 textarea { resize: vertical; min-height: 20rem; font-family: var(--font-serif); line-height: 2; }
 #content { height: clamp(16rem, 45vh, 28rem); height: clamp(16rem, 45dvh, 28rem); min-height: 12rem; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; white-space: pre-wrap; overflow-wrap: break-word; }
-.body-footer { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.body-footer { display: flex; align-items: baseline; justify-content: flex-end; gap: 1rem; }
 .body-editor-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .body-editor-heading button { font-size: .8rem; }
 .body-find-panel { display: grid; gap: .75rem; padding: 1rem; margin: .3rem 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--secondary); }

@@ -22,17 +22,14 @@
   <details id="temporary-login" class="temporary-login"><summary>トークンで今回だけ接続する</summary><form id="temporary-form" class="editor-form"><label class="field-group"><span class="field-label">GitHubトークン</span><input id="temporary-token" type="password" autocomplete="off" spellcheck="false" required maxlength="512"></label><p class="help">共有の端末など、ログイン設定を保存したくない場合に使う。</p><div class="editor-actions"><button type="submit">今回だけ接続する</button></div></form></details>
 </section>
 <section id="dashboard" hidden>
-  <div class="admin-title-row"><h1>日記</h1><button id="new-post" class="primary">日記を書く</button></div>
+  <div class="admin-title-row"><h1>一覧</h1><button id="new-post" class="primary">日記を書く</button></div>
   <div class="toolbar list-toolbar"><label>表示 <select id="filter"><option value="all">すべて</option><option value="published">公開</option><option value="draft">下書き</option></select></label><label>日付順 <select id="sort-order"><option value="newest">新しい順</option><option value="oldest">古い順</option></select></label><label class="search-field">検索 <input id="search" type="search" placeholder="題名・本文・分類"></label><button id="refresh">再読み込み</button><button id="export">Markdown一括出力</button><a id="actions-link" target="_blank" rel="noopener">公開の反映状況</a></div>
-  <p class="help">日記の日付で並べ替える。文字数は本文のみで、改行を除き、空白を含む。</p>
-  <p class="help">一括出力は、下書きを含む全記事をMarkdownのZIPファイルにする。</p>
   <div id="post-list" class="admin-list"></div>
 </section>
 <section id="editor" class="editor-card" hidden>
-  <div class="admin-title-row"><h1 id="editor-title">日記を書く</h1><button id="back">一覧へ戻る</button></div>
+  <div class="admin-title-row"><h1 id="editor-title">日記を書く</h1><button id="back" type="button">一覧に戻る</button></div>
   <form id="editor-form" class="editor-form">
-    <label class="field-group"><span class="field-label">題名</span><input id="title" maxlength="200" aria-describedby="title-help"></label>
-    <p id="title-help" class="help">下書きでは空欄にできる。公開するときは題名が必要。</p>
+    <label class="field-group"><span class="field-label">題名</span><input id="title" maxlength="200"></label>
     <div class="field-row"><label class="field-group"><span class="field-label">日付</span><input id="entry-date" type="date" required></label><label class="field-group"><span class="field-label">分類</span><input id="category" maxlength="80" placeholder="日記"></label></div>
     <div class="field-group"><div class="body-editor-heading"><label for="content" class="field-label">本文</label><button id="body-find-toggle" type="button" aria-expanded="false" aria-controls="body-find-panel">検索・置換</button></div>
       <section id="body-find-panel" class="body-find-panel" aria-label="本文の検索と置換" hidden>
@@ -41,10 +38,11 @@
         <div class="body-find-actions"><span id="body-find-count" class="help" role="status" aria-live="polite"></span><button id="body-find-previous" type="button">前へ</button><button id="body-find-next" type="button">次へ</button><button id="body-find-replace" type="button">1件置換</button><button id="body-find-all" type="button">すべて置換</button><button id="body-find-undo" type="button">直前の置換を戻す</button><button id="body-find-close" type="button">閉じる</button></div>
         <p class="help">空白や記号も入力どおりに検索する。置換後を空欄にすると削除する。</p><p id="body-find-message" class="help" role="status" aria-live="polite"></p>
       </section>
-      <textarea id="content" rows="12" maxlength="150000" aria-describedby="content-count content-count-help" placeholder="ここに、その日のことを書く。"></textarea><div class="body-footer"><span id="content-count-help" class="help">改行を除き、空白を含む</span><span id="content-count" class="help">0文字</span></div></div>
+      <textarea id="content" rows="12" maxlength="150000" aria-describedby="content-count" placeholder="ここに、その日のことを書く。"></textarea><div class="body-footer"><span id="content-count" class="help">0文字</span></div></div>
     <div class="publish-row"><span>公開設定：<span id="post-status" class="status-pill" data-published="false">下書き</span></span><button id="unpublish-post" type="button" hidden>下書きへ戻す</button><span id="save-state" class="help" role="status"></span></div>
-    <p id="publish-help" class="help">「保存する」で下書きを保存し、「公開する」でサイトに公開する。公開サイトへの反映には数分かかる。</p>
+    <p id="publish-help" class="help" hidden></p>
     <div class="editor-actions"><button id="delete-post" type="button" class="danger" hidden>削除</button><button id="preview-toggle" type="button">本文を確認</button><div class="toolbar"><button id="save" type="submit">保存する</button><button id="publish-post" type="submit" class="primary">公開する</button></div></div>
+    <div class="editor-actions"><button id="back-bottom" type="button">一覧に戻る</button></div>
   </form>
   <section id="preview" hidden aria-label="本文の確認"><h2 class="post-title" id="preview-title"></h2><div id="preview-content" class="post-body"></div></section>
 </section>
